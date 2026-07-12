@@ -2,7 +2,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, CheckCircle, ShieldCheck, Truck, Percent, ShoppingBag, ChevronRight, Home } from 'lucide-react';
+import { ArrowLeft, ShieldCheck, Truck, Percent, ShoppingBag, ChevronRight, Home } from 'lucide-react';
 import ProductShareButton from '@/components/ProductShareButton';
 import { query, initializeDatabase } from '@/lib/db';
 import { 
@@ -111,7 +111,7 @@ export default async function ProductDetailPage({ params }: Props) {
       categoryName = product.category_name || 'Genel';
       categorySlug = product.category_slug || 'genel';
 
-      // Internal Linking: Fetch 4 similar products from the same category
+      // Benzer ürünleri getir
       similarProducts = await query(`
         SELECT p.*, c.name as category_name 
         FROM products p 
@@ -137,7 +137,7 @@ export default async function ProductDetailPage({ params }: Props) {
   if (!product) {
     return (
       <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4">
-        <div className="bg-white rounded-2xl p-8 max-w-md w-full text-center shadow-xs border border-slate-200/60 animate-in fade-in zoom-in-95 duration-200">
+        <div className="bg-white rounded-2xl p-8 max-w-md w-full text-center shadow-xs border border-slate-200/60">
           <h2 className="text-xl font-bold text-slate-800 mb-2">Ürün Bulunamadı</h2>
           <p className="text-slate-500 text-xs mb-6">Aradığınız ürün yayından kaldırılmış veya taşınmış olabilir.</p>
           <Link href="/" className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition-all shadow-xs">
@@ -148,7 +148,6 @@ export default async function ProductDetailPage({ params }: Props) {
     );
   }
 
-  // Schema LD Markups
   const productSchema = generateProductSchema(product, categoryName);
   
   const breadcrumbItems = [
@@ -160,7 +159,6 @@ export default async function ProductDetailPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col justify-between">
-      {/* Dynamic JSON-LD Schema Markups */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
@@ -173,25 +171,25 @@ export default async function ProductDetailPage({ params }: Props) {
       {/* Header */}
       <header className="sticky top-0 z-40 bg-white border-b border-slate-200/80 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5" id="header-logo-link">
+          <Link href="/" className="flex items-center gap-2.5">
             <div className="relative">
-              <img id="header-logo-img" src="/logo.png" alt="Hanibaba Tedarik" className="h-11 w-auto object-contain" />
-              <div className="absolute -top-1.5 -right-2.5 bg-gradient-to-br from-orange-500 to-red-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded-lg border border-white shadow-md leading-none tracking-wider scale-95 select-none" id="hb-logo-badge">
+              <img src="/logo.png" alt="Hanibaba Tedarik" className="h-11 w-auto object-contain" />
+              <div className="absolute -top-1.5 -right-2.5 bg-gradient-to-br from-orange-500 to-red-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded-lg border border-white shadow-md leading-none tracking-wider scale-95 select-none">
                 HB
               </div>
             </div>
-            <span className="hidden lg:inline-block text-slate-400 text-[10px] uppercase font-bold tracking-widest border-l border-slate-200 pl-3 leading-tight" id="header-logo-tagline">
+            <span className="hidden lg:inline-block text-slate-400 text-[10px] uppercase font-bold tracking-widest border-l border-slate-200 pl-3 leading-tight">
               KURUMSAL<br />TEDARİK
             </span>
           </Link>
-          <Link href="/" className="flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-blue-600 transition-colors" id="header-back-link">
+          <Link href="/" className="flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-blue-600 transition-colors">
             <ArrowLeft className="w-4 h-4" /> Mağazaya Git
           </Link>
         </div>
       </header>
 
-      {/* Semantic Breadcrumbs (SEO Booster) */}
-      <nav className="bg-slate-100 border-b border-slate-200/50 py-3" aria-label="Breadcrumb" id="breadcrumb-navigation">
+      {/* Breadcrumbs */}
+      <nav className="bg-slate-100 border-b border-slate-200/50 py-3" aria-label="Breadcrumb">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-2 text-xs font-medium text-slate-500">
           <Link href="/" className="flex items-center gap-1 hover:text-blue-600 transition-colors">
             <Home className="w-3.5 h-3.5" />
@@ -208,33 +206,32 @@ export default async function ProductDetailPage({ params }: Props) {
         </div>
       </nav>
 
-      {/* Product View Stage */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-1 w-full" id="product-detail-main">
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-1 w-full">
         <div className="bg-white rounded-3xl border border-slate-200/60 shadow-xs p-6 md:p-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            {/* Image Stage with Next.js Image Optimization */}
-            <div className="bg-slate-50 rounded-2xl border border-slate-200/50 p-6 flex items-center justify-center min-h-[300px] md:min-h-[400px] relative">
+            
+            {/* DUZELTILEN GORSEL ALANI */}
+            <div className="bg-white rounded-2xl border border-slate-200/50 p-6 flex items-center justify-center min-h-[300px] md:min-h-[400px] relative">
               <Image
                 src={product.image_url || 'https://picsum.photos/seed/placeholder/600/600'}
                 alt={product.name || 'Hanibaba Tedarik Ürün Görseli'}
                 width={450}
                 height={450}
-                loading="lazy"
-                referrerPolicy="no-referrer"
-                className="max-h-[350px] w-auto object-contain mix-blend-multiply drop-shadow-md rounded-lg"
-                id="product-detail-image"
+                priority={true} // Sayfa hızını artırmak ve ilk yüklemede resmi göstermek için priority eklendi
+                unoptimized={true} // Dışarıdan gelen resimlerin engellenmesini önlemek için eklendi
+                className="max-h-[350px] w-auto object-contain drop-shadow-sm rounded-lg"
               />
             </div>
 
-            {/* Info Stage */}
-            <div className="flex flex-col justify-between space-y-6" id="product-detail-info">
+            {/* Bilgiler */}
+            <div className="flex flex-col justify-between space-y-6">
               <div>
                 <div className="flex justify-between items-start gap-4">
                   <div>
                     <span className="text-[10px] uppercase tracking-widest font-black text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md">
                       {categoryName}
                     </span>
-
                     <h1 className="text-2xl md:text-3xl font-black text-slate-900 mt-3 font-display tracking-tight leading-tight">
                       {product.name}
                     </h1>
@@ -270,7 +267,6 @@ export default async function ProductDetailPage({ params }: Props) {
                 <Link
                   href={`/?selectProduct=${product.id}`}
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3.5 px-6 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm shadow-blue-100 uppercase tracking-wider text-center"
-                  id="buy-now-link"
                 >
                   <ShoppingBag className="w-4 h-4" /> Mağazada Aç ve Satın Al
                 </Link>
@@ -279,8 +275,8 @@ export default async function ProductDetailPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Dynamic Trust Props Banner */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8" id="trust-banner">
+        {/* Bilgilendirme Bannerı */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
           <div className="bg-white border border-slate-200/50 rounded-2xl p-4 flex items-center gap-3.5 shadow-2xs">
             <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
               <Truck className="w-5 h-5 stroke-[2.5]" />
@@ -312,25 +308,25 @@ export default async function ProductDetailPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Internal Linking: Similar Products Section (İç Linkleme & Benzer Ürünler) */}
+        {/* Benzer Ürünler */}
         {similarProducts.length > 0 && (
-          <section className="mt-16" id="similar-products-section">
+          <section className="mt-16">
             <h2 className="text-xl font-extrabold text-slate-900 font-display tracking-tight mb-6 flex items-center gap-2">
               <span className="w-1.5 h-6 bg-blue-600 rounded-full"></span>
               İlginizi Çekebilecek Diğer Ürünler
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {similarProducts.map((p: any) => (
-                <div key={p.id} className="bg-white rounded-2xl border border-slate-200/60 p-4 hover:shadow-md transition-all flex flex-col justify-between" id={`similar-product-${p.id}`}>
+                <div key={p.id} className="bg-white rounded-2xl border border-slate-200/60 p-4 hover:shadow-md transition-all flex flex-col justify-between">
                   <div>
-                    <div className="aspect-square bg-slate-50 rounded-xl flex items-center justify-center p-3 mb-3 relative overflow-hidden">
+                    <div className="aspect-square bg-white rounded-xl flex items-center justify-center p-3 mb-3 relative overflow-hidden border border-slate-100">
                       <Image
                         src={p.image_url || 'https://picsum.photos/seed/placeholder/300/300'}
                         alt={p.name}
                         width={200}
                         height={200}
-                        loading="lazy"
-                        className="object-contain max-h-[140px] mix-blend-multiply"
+                        unoptimized={true}
+                        className="object-contain max-h-[140px]"
                       />
                     </div>
                     <span className="text-[10px] uppercase tracking-wider font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-sm">
@@ -361,7 +357,7 @@ export default async function ProductDetailPage({ params }: Props) {
       </main>
 
       {/* Footer */}
-      <footer className="bg-slate-900 border-t border-slate-800 text-slate-400 text-[10px] py-10 text-center" id="product-detail-footer">
+      <footer className="bg-slate-900 border-t border-slate-800 text-slate-400 text-[10px] py-10 text-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
           <p className="font-bold text-slate-300 text-xs">Hanibaba Tedarik Kurumsal Ofis Marketiniz</p>
           <p className="max-w-md mx-auto text-slate-400 leading-relaxed text-xs">
@@ -377,4 +373,5 @@ export default async function ProductDetailPage({ params }: Props) {
       </footer>
     </div>
   );
-}
+            }
+                
