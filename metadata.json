@@ -1,0 +1,8 @@
+{
+  "name": "Hanibaba Tedarik",
+  "description": "Avansas benzeri, bireysel ve kurumsal müşterilere özel ödeme ve cari hesap seçenekleri sunan, kapsamlı yönetim panelli kurumsal tedarik e-ticaret platformu.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
