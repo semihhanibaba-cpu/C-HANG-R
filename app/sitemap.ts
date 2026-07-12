@@ -8,7 +8,7 @@ export const revalidate = 0;
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = getBaseUrl();
 
-  // Base routes with explicit Next.js Sitemap type to allow multiple changeFrequency values
+  // Ana sayfa rotası
   const routes: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
@@ -19,12 +19,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   try {
-    // 1. Fetch categories dynamically
+    // 1. Kategorileri dinamik olarak çek
     const categories = await query('SELECT slug FROM categories');
     if (categories && categories.length > 0) {
       categories.forEach((category: any) => {
         routes.push({
-          url: `${baseUrl}/categories/${category.slug}`,
+          url: `${baseUrl}/categories/${category.slug}`, // Eğer link yapın direkt domain.com/slug ise '/categories' kısmını silebilirsin
           lastModified: new Date(),
           changeFrequency: 'weekly',
           priority: 0.9,
@@ -32,7 +32,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       });
     }
 
-    // 2. Fetch products dynamically from high-performance database
+    // 2. Ürünleri dinamik olarak çek
     const products = await query('SELECT slug, created_at FROM products');
     if (products && products.length > 0) {
       products.forEach((product: any) => {
@@ -45,7 +45,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       });
     }
 
-    // 3. Fetch custom pages dynamically
+    // 3. Özel sayfaları (SEO sayfalarını) çek
     const customPages = await query('SELECT slug FROM pages');
     if (customPages && customPages.length > 0) {
       customPages.forEach((page: any) => {
@@ -60,14 +60,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   } catch (error) {
     console.error('Sitemap dynamic generation error:', error);
   } finally {
-    // End database pool connections during build phase so static generation doesn't hang the process
-    try {
-      const pool = getPool();
-      if (pool) {
-        await pool.end();
+    // Sadece Next.js build (derleme) aşamasındaysak havuzu kapat ki süreç askıda kalmasın.
+    // Canlıda sayfa yenilenirken (runtime) havuz asla kapatılmamalı!
+    if (process.env.NEXT_PHASE === 'phase-production-build' || process.env.IS_BUILD === 'true') {
+      try {
+        const pool = getPool();
+        if (pool) {
+          await pool.end();
+          console.log('Database pool ended safely during build phase.');
+        }
+      } catch (err) {
+        console.warn('Could not end db pool in sitemap:', err);
       }
-    } catch (err) {
-      console.warn('Could not end db pool in sitemap:', err);
     }
   }
 
