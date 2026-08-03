@@ -12,7 +12,6 @@ import {
   Home, 
   CheckCircle2, 
   Building2, 
-  Share2, 
   Box,
   FileText
 } from 'lucide-react';
@@ -183,7 +182,7 @@ export default async function ProductDetailPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
-      {/* Modern Sticky Header */}
+      {/* Header */}
       <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200/60 shadow-2xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
@@ -200,7 +199,7 @@ export default async function ProductDetailPage({ params }: Props) {
         </div>
       </header>
 
-      {/* Minimal Breadcrumb */}
+      {/* Breadcrumb */}
       <nav className="bg-white border-b border-slate-100 py-3" aria-label="Breadcrumb">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-2 text-xs font-medium text-slate-500 overflow-x-auto whitespace-nowrap">
           <Link href="/" className="flex items-center gap-1 hover:text-blue-600 transition-colors">
@@ -221,11 +220,11 @@ export default async function ProductDetailPage({ params }: Props) {
       {/* Main Container */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
         
-        {/* Ürün Detay Card */}
+        {/* Ürün Detay Kartı */}
         <div className="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
             
-            {/* Sol: Görsel Alanı (5 Kolon) */}
+            {/* Görsel Alanı */}
             <div className="lg:col-span-5 p-6 md:p-10 bg-gradient-to-b from-slate-50/50 to-white border-b lg:border-b-0 lg:border-r border-slate-100 flex flex-col justify-between relative">
               <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
                 {product.stock > 0 ? (
@@ -256,10 +255,9 @@ export default async function ProductDetailPage({ params }: Props) {
               </div>
             </div>
 
-            {/* Sağ: Detay ve Satın Alma (7 Kolon) */}
+            {/* Detaylar & Fiyat */}
             <div className="lg:col-span-7 p-6 md:p-10 flex flex-col justify-between space-y-6">
               <div>
-                {/* Üst Başlık & Kategori & Paylaş */}
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <Link 
@@ -277,7 +275,6 @@ export default async function ProductDetailPage({ params }: Props) {
                   </div>
                 </div>
 
-                {/* SKU & Stok Metrikleri */}
                 <div className="flex items-center gap-4 text-xs text-slate-500 mt-4 pb-6 border-b border-slate-100">
                   <div className="flex items-center gap-1.5 bg-slate-100/80 px-2.5 py-1 rounded-md font-mono text-slate-700 font-bold">
                     <span>SKU:</span>
@@ -290,7 +287,6 @@ export default async function ProductDetailPage({ params }: Props) {
                   )}
                 </div>
 
-                {/* Kısa Açıklama Özeti */}
                 <div className="mt-6">
                   <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                     <FileText className="w-3.5 h-3.5" /> Ürün Açıklaması
@@ -301,7 +297,7 @@ export default async function ProductDetailPage({ params }: Props) {
                 </div>
               </div>
 
-              {/* Fiyatlandırma ve CTA Kutusu */}
+              {/* Fiyatlandırma Kutusu */}
               <div className="bg-slate-900 text-white rounded-2xl p-6 shadow-xl space-y-4">
                 <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-slate-800 pb-4">
                   <div>
@@ -318,7 +314,6 @@ export default async function ProductDetailPage({ params }: Props) {
                   </span>
                 </div>
 
-                {/* Aksiyon Butonları */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
                   <Link
                     href={`/?selectProduct=${product.id}`}
@@ -375,7 +370,7 @@ export default async function ProductDetailPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Benzer Ürünler Akışı */}
+        {/* Benzer Ürünler */}
         {similarProducts.length > 0 && (
           <section className="pt-6">
             <div className="flex items-center justify-between mb-6">
@@ -427,4 +422,27 @@ export default async function ProductDetailPage({ params }: Props) {
                 </div>
               ))}
             </div>
-   
+          </section>
+        )}
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-slate-950 text-slate-400 text-xs py-12 border-t border-slate-900 mt-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 text-center">
+          <div className="space-y-2">
+            <p className="font-extrabold text-slate-200 text-sm tracking-wide uppercase">Hanibaba Tedarik Portal</p>
+            <p className="max-w-md mx-auto text-slate-500 text-xs leading-relaxed">
+              Ofis, gıda, temizlik ve ambalaj malzemelerinde kurumsal alım ve hızlı teslimat çözümleri.
+            </p>
+          </div>
+          <div className="flex justify-center gap-6 text-slate-400 font-medium border-t border-slate-900 pt-6 max-w-xs mx-auto">
+            <Link href="/" className="hover:text-white transition-colors">Mağaza</Link>
+            <span>•</span>
+            <Link href="/sitemap.xml" className="hover:text-white transition-colors">Site Haritası</Link>
+          </div>
+          <p className="text-[10px] text-slate-600 pt-2">© {new Date().getFullYear()} Hanibaba Tedarik. Tüm hakları saklıdır.</p>
+        </div>
+      </footer>
+    </div>
+  );
+}
