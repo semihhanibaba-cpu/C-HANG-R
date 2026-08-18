@@ -164,10 +164,14 @@ export default async function CustomPage({ params }: Props) {
             </div>
           )}
 
-          {/* Page Content Rendered with standard clean typography styles */}
-          <div className="prose max-w-none text-slate-700 text-sm sm:text-base leading-relaxed whitespace-pre-line" id="custom-page-content">
-            {page.content || 'Bu sayfa için henüz bir içerik girilmemiştir.'}
-          </div>
+          {/* Render HTML Content safely from Database */}
+          <div
+            className="prose prose-slate max-w-none text-slate-700 text-sm sm:text-base leading-relaxed prose-headings:font-bold prose-a:text-blue-600 prose-img:rounded-xl"
+            id="custom-page-content"
+            dangerouslySetInnerHTML={{
+              __html: page.content || '<p>Bu sayfa için henüz bir içerik girilmemiştir.</p>',
+            }}
+          />
         </article>
       </main>
 
@@ -188,4 +192,4 @@ export default async function CustomPage({ params }: Props) {
       </footer>
     </div>
   );
-}
+      }
